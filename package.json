@@ -1,0 +1,11 @@
+{
+  "name": "accenture-test",
+  "version": "1.0.0",
+  "description": "Teste para vaga de back-end da accenture",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luis Durante",
+  "license": "ISC"
+}
