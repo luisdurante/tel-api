@@ -5,6 +5,14 @@ class UsersController {
     const users = await usersService.list();
     return res.json({ data: users });
   }
+
+  async signup(req, res) {
+    return {};
+  }
+
+  async signin(req, res) {
+    return {};
+  }
 }
 
 module.exports = new UsersController();
