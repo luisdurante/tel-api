@@ -1,5 +1,5 @@
 const express = require('express');
-const routes = require('./routes');
+const routes = require('./app/routes/users.routes');
 require('dotenv').config();
 
 class App {
