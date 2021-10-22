@@ -1,5 +1,4 @@
 const createError = require('./error-handler.helper');
-const bcrypt = require('bcrypt');
 
 function transformPayload(body) {
   const transformedPayload = {
@@ -37,9 +36,4 @@ function transformPayload(body) {
   return transformedPayload;
 }
 
-async function hashPassword(password) {
-  const salt = await bcrypt.genSalt();
-  return await bcrypt.hash(password, salt);
-}
-
-module.exports = { transformPayload, hashPassword };
+module.exports = { transformPayload };

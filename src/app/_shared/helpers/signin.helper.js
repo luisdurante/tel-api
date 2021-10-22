@@ -1,6 +1,4 @@
 const createError = require('./error-handler.helper');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 function transformPayload(body) {
   if (!body.email || !body.senha) {
@@ -13,14 +11,4 @@ function transformPayload(body) {
   };
 }
 
-async function comparePassword(password, hashedPassword) {
-  const foundPassword = await bcrypt.compare(password, hashedPassword);
-
-  return foundPassword;
-}
-
-function generateToken(id) {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: 1800 });
-}
-
-module.exports = { comparePassword, transformPayload, generateToken };
+module.exports = { transformPayload };
