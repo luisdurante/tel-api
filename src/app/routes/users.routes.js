@@ -5,6 +5,8 @@ routes.post('/users/signup', usersController.signup);
 
 routes.post('/users/signin', usersController.signin);
 
-routes.get('/users/:id', usersController.list);
+routes.get('/users/:id', usersController.getById);
+
+routes.get('/users', usersController.list);
 
 module.exports = routes;
