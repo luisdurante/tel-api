@@ -1,4 +1,5 @@
 const usersService = require('../services/users.service');
+const signupHelper = require('../_shared/helpers/signup.helper');
 
 class UsersController {
   async list(req, res) {
@@ -7,7 +8,13 @@ class UsersController {
   }
 
   async signup(req, res) {
-    return {};
+    try {
+      const transformedPayload = signupHelper.transformPayload(req.body);
+      const response = await usersService.signup(transformedPayload);
+      return res.json(response);
+    } catch (err) {
+      return res.status(err.status || 500).json({ mensagem: err.message });
+    }
   }
 
   async signin(req, res) {
