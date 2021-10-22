@@ -1,5 +1,6 @@
 const mongodb = require('../_shared/config/mongodb.config');
 const { ObjectId } = require('mongodb');
+const createError = require('../_shared/helpers/error-handler.helper');
 
 class UsersRepository {
   async list() {
@@ -13,6 +14,9 @@ class UsersRepository {
   }
 
   async getById(userId) {
+    if (!ObjectId.isValid(userId)) {
+      throw createError(400, 'Id de usuário inválido. Verifique o id.');
+    }
     const db = await mongodb.connect();
     return await db.collection('users').findOne({ _id: ObjectId(userId) });
   }
