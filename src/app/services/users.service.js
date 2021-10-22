@@ -37,6 +37,18 @@ class UsersService {
     if (!(await signinHelper.comparePassword(userPayload.senha, user.senha))) {
       throw createError(401, 'Usuário e/ou senha inválidos');
     }
+
+    try {
+      await usersRepository.findOneAndUpdate(user._id, {
+        ultimo_login: moment().toISOString(),
+      });
+
+      const updatedUser = await usersRepository.getById(user._id);
+
+      return updatedUser;
+    } catch (mongodbError) {
+      throw createError(500, mongodbError.message);
+    }
   }
 }
 
