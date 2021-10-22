@@ -3,6 +3,7 @@ const createError = require('../_shared/helpers/error-handler.helper');
 const signupHelper = require('../_shared/helpers/signup.helper');
 const signinHelper = require('../_shared/helpers/signin.helper');
 const moment = require('moment');
+const { ObjectId } = require('mongodb');
 
 class UsersService {
   async list() {
@@ -19,12 +20,22 @@ class UsersService {
     userPayload.ultimo_login = userPayload.data_criacao;
     userPayload.senha = await signupHelper.hashPassword(userPayload.senha);
 
-    const createdUser = usersRepository.create(userPayload);
+    try {
+      const createdUser = await usersRepository.create(userPayload);
+      const userId = ObjectId(createdUser.insertedId).toString();
 
-    /*
-      token -> persistir
-    */
-    return createdUser;
+      const generatedToken = signinHelper.generateToken(userId);
+
+      await usersRepository.findOneAndUpdate(userId, {
+        token: generatedToken,
+      });
+
+      const createdUserWithToken = await usersRepository.getById(userId);
+
+      return createdUserWithToken;
+    } catch (mongodbError) {
+      throw createError(500, mongodbError.message);
+    }
   }
 
   async signin(userPayload) {
@@ -38,9 +49,12 @@ class UsersService {
       throw createError(401, 'Usuário e/ou senha inválidos');
     }
 
+    const generatedToken = signinHelper.generateToken(user._id);
+
     try {
       await usersRepository.findOneAndUpdate(user._id, {
         ultimo_login: moment().toISOString(),
+        token: generatedToken,
       });
 
       const updatedUser = await usersRepository.getById(user._id);
