@@ -12,16 +12,25 @@ class UsersRepository {
     return await db.collection('users').findOne({ email });
   }
 
+  async getById(userId) {
+    const db = await mongodb.connect();
+    return await db.collection('users').findOne({ _id: ObjectId(userId) });
+  }
+
   async create(user) {
     const db = await mongodb.connect();
     return await db.collection('users').insertOne(user);
   }
 
-  async update(userId, fieldsToUpdate) {
+  async findOneAndUpdate(userId, fieldsToUpdate) {
     const db = await mongodb.connect();
     return await db
       .collection('users')
-      .updateOne({ _id: ObjectId(userId) }, fieldsToUpdate);
+      .findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { $set: fieldsToUpdate },
+        { returnNewDocument: true }
+      );
   }
 }
 
