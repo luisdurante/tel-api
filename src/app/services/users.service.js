@@ -1,5 +1,7 @@
 const usersRepository = require('../repositories/users.repository');
 const createError = require('../_shared/helpers/error-handler.helper');
+const signupHelper = require('../_shared/helpers/signup.helper');
+const signinHelper = require('../_shared/helpers/signin.helper');
 const moment = require('moment');
 
 class UsersService {
@@ -12,19 +14,29 @@ class UsersService {
       throw createError(409, 'Email já existente');
     }
 
-    userPayload.data_criacao = moment.utc();
+    userPayload.data_criacao = moment().toISOString();
     userPayload.data_atualizacao = userPayload.data_criacao;
     userPayload.ultimo_login = userPayload.data_criacao;
+    userPayload.senha = await signupHelper.hashPassword(userPayload.senha);
+
+    const createdUser = usersRepository.create(userPayload);
 
     /*
-      hash password
       token -> persistir
     */
-    return userPayload;
+    return createdUser;
   }
 
-  async signin() {
-    return {};
+  async signin(userPayload) {
+    const user = await usersRepository.getByEmail(userPayload.email);
+
+    if (!user) {
+      throw createError(401, 'Usuário e/ou senha inválidos');
+    }
+
+    if (!(await signinHelper.comparePassword(userPayload.senha, user.senha))) {
+      throw createError(401, 'Usuário e/ou senha inválidos');
+    }
   }
 }
 
