@@ -1,4 +1,5 @@
 const mongodb = require('../_shared/config/mongodb.config');
+const { ObjectId } = require('mongodb');
 
 class UsersRepository {
   async list() {
@@ -9,6 +10,18 @@ class UsersRepository {
   async getByEmail(email) {
     const db = await mongodb.connect();
     return await db.collection('users').findOne({ email });
+  }
+
+  async create(user) {
+    const db = await mongodb.connect();
+    return await db.collection('users').insertOne(user);
+  }
+
+  async update(userId, fieldsToUpdate) {
+    const db = await mongodb.connect();
+    return await db
+      .collection('users')
+      .updateOne({ _id: ObjectId(userId) }, fieldsToUpdate);
   }
 }
 
