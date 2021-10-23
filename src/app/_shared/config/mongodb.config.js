@@ -16,4 +16,8 @@ async function connect() {
   return mongodb;
 }
 
-module.exports = { connect };
+async function close() {
+  await client.close();
+}
+
+module.exports = { connect, close };
