@@ -9,4 +9,8 @@ routes.get('/users/:id', usersController.getById);
 
 routes.get('/users/list', usersController.list);
 
+routes.get('*', (req, res) => {
+  res.json({ mensagem: 'Rota não encontrada' });
+});
+
 module.exports = routes;
