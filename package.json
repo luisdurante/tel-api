@@ -5,6 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "dev": "nodemon ./src/index.js",
+    "test": "jest",
     "start": "node ./src/index.js"
   },
   "author": "Luis Durante",
@@ -17,8 +18,10 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.1.1",
+    "jest": "27.2.4",
     "nodemon": "^2.0.14",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "supertest": "^6.1.6"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
