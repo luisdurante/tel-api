@@ -5,10 +5,6 @@ const moment = require('moment');
 const { ObjectId } = require('mongodb');
 
 class UsersService {
-  async list() {
-    return await usersRepository.list();
-  }
-
   async getById(userId) {
     try {
       return await usersRepository.getById(userId);
@@ -18,16 +14,16 @@ class UsersService {
   }
 
   async signup(userPayload) {
-    if (await usersRepository.getByEmail(userPayload.email)) {
-      throw createError(409, 'Email já existente');
-    }
-
-    userPayload.data_criacao = moment().toISOString();
-    userPayload.data_atualizacao = userPayload.data_criacao;
-    userPayload.ultimo_login = userPayload.data_criacao;
-    userPayload.senha = await authHelper.hashPassword(userPayload.senha);
-
     try {
+      if (await usersRepository.getByEmail(userPayload.email)) {
+        throw createError(409, 'Email já existente');
+      }
+
+      userPayload.data_criacao = moment().toISOString();
+      userPayload.data_atualizacao = userPayload.data_criacao;
+      userPayload.ultimo_login = userPayload.data_criacao;
+      userPayload.senha = await authHelper.hashPassword(userPayload.senha);
+
       const createdUser = await usersRepository.create(userPayload);
       const userId = ObjectId(createdUser.insertedId).toString();
 
@@ -40,25 +36,25 @@ class UsersService {
       const createdUserWithToken = await usersRepository.getById(userId);
 
       return createdUserWithToken;
-    } catch (mongodbError) {
-      throw createError(500, mongodbError.message);
+    } catch (err) {
+      throw createError(err.status || 500, err.message);
     }
   }
 
   async signin(userPayload) {
-    const user = await usersRepository.getByEmail(userPayload.email);
-
-    if (!user) {
-      throw createError(401, 'Usuário e/ou senha inválidos');
-    }
-
-    if (!(await authHelper.comparePassword(userPayload.senha, user.senha))) {
-      throw createError(401, 'Usuário e/ou senha inválidos');
-    }
-
-    const generatedToken = authHelper.generateToken(user._id);
-
     try {
+      const user = await usersRepository.getByEmail(userPayload.email);
+
+      if (!user) {
+        throw createError(401, 'Usuário e/ou senha inválidos');
+      }
+
+      if (!(await authHelper.comparePassword(userPayload.senha, user.senha))) {
+        throw createError(401, 'Usuário e/ou senha inválidos');
+      }
+
+      const generatedToken = authHelper.generateToken(user._id);
+
       await usersRepository.findOneAndUpdate(user._id, {
         ultimo_login: moment().toISOString(),
         token: generatedToken,
@@ -67,8 +63,8 @@ class UsersService {
       const updatedUser = await usersRepository.getById(user._id);
 
       return updatedUser;
-    } catch (mongodbError) {
-      throw createError(500, mongodbError.message);
+    } catch (err) {
+      throw createError(err.status || 500, err.message);
     }
   }
 }

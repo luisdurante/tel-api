@@ -4,11 +4,6 @@ const signinHelper = require('../_shared/helpers/signin.helper');
 const authHelper = require('../_shared/helpers/auth.helper');
 
 class UsersController {
-  async list(req, res) {
-    const users = await usersService.list();
-    return res.json({ data: users });
-  }
-
   async getById(req, res) {
     try {
       const userId = req.params.id;
