@@ -4,6 +4,7 @@
 
 - Clone o projeto
 - Ao abrir, digite o comando `npm install`
+- Adicione o arquivo `.env` enviado junto pelo email
 - Para rodar o projeto, digite: `npm run start`
 - Para rodar os testes, digite: `npm run test`
 
