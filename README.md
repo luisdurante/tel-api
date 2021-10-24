@@ -7,6 +7,7 @@
 - Adicione o arquivo `.env` enviado junto pelo email
 - Para rodar o projeto, digite: `npm run start`
 - Para rodar os testes, digite: `npm run test`
+- Você terá acesso pela url: `localhost:3000`
 
 ## Proposta
 
