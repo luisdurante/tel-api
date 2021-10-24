@@ -14,7 +14,7 @@ class App {
 
     this.express.use((err, req, res, next) => {
       if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-        return res.status(400).send({ mensagem: 'JSON inválido' }); // Bad request
+        return res.status(400).send({ mensagem: 'JSON inválido' });
       }
       next();
     });
