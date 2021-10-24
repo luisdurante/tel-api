@@ -12,6 +12,10 @@ class UsersController {
 
       const user = await usersService.getById(userId);
 
+      if (!user) {
+        return res.status(401).json({ mensagem: 'Não autorizado' });
+      }
+
       if (token !== user.token) {
         return res.status(401).json({ mensagem: 'Não autorizado' });
       }
