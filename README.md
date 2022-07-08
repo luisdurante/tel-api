@@ -22,10 +22,6 @@
   }
   ```
 
-## Prazo
-
-- 3 dias corridos.
-
 ## Sign up
 
 - Este endpoint deverá receber um usuário com os seguintes campos: nome, email, senha e uma lista de objetos telefone. Seguem os modelos:
@@ -69,16 +65,13 @@
 - Caso não seja a MENOS que 30 minutos atrás, retornar erro com status apropriado com mensagem "Sessão inválida".
 - Caso tudo esteja ok, retornar o usuário.
 
-## Requisitos
+## Complementar com
 
 - Persistência de dados
 - Gestão de dependências via gerenciador de pacotes (npm)
 - Utilização de Eslint
 - API: Express, Hapi ou similares.
 - Utilizar banco nosql
-
-## Requisitos desejáveis
-
 - JWT como token
 - Testes unitários
 - Criptografia não reversível (hash) na senha e no token
@@ -86,6 +79,3 @@
 - Utilização de sintaxe de JS ES6
 - Utilização de padrões de projeto para organização do código (arquitetura hexagonal, Domain Driven Design, etc.)
 
-## Submissão
-
-- O desafio deve ser entregue pelo GitHub/Bitbucket
